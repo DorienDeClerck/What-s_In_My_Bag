@@ -1,49 +1,109 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="utf-8">
-  <!-- Zonder deze regel toont een telefoon je pagina als een verkleinde desktoppagina. -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- De titel in het tabblad van de browser. Vervang door je onderwerp. -->
-  <title>De vogels in mijn tuin</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hello!</title>
+<link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #000;
+  }
+  body {
+    box-sizing: border-box;
+    padding: 6px;
+  }
+  .scherm {
+    height: 100%;
+    background: #1c05f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8vh;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  h1 {
+    font-family: "Pinyon Script", cursive;
+    font-weight: 400;
+    font-size: clamp(80px, 14vw, 220px);
+    color: #fff;
+    margin: 0 0 4vh;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+  h1.zichtbaar { opacity: 1; }
+
+  .regel {
+    display: flex;
+    margin-bottom: 24px;
+    min-height: 1.2em;
+    font-family: "DotGothic16", monospace;
+    font-size: clamp(24px, 3.5vw, 52px);
+  }
+  .letter {
+    display: inline-block;
+    width: 0.66em;
+    height: 1.2em;
+    line-height: 1.2em;
+    text-align: center;
+    background: #fff;
+    color: #1c05f5;
+    border-right: 1px solid #1c05f5;
+    box-sizing: border-box;
+  }
+</style>
 </head>
-<body class="overzicht">
+<body>
+  <div class="scherm">
+    <h1 id="hello">Hello!</h1>
+    <div id="tekst"></div>
+  </div>
 
-  <!--
-    NEVER FINISHED
-    Minor Webdesign, LUCA Gent, 2026-2027
+<script>
+  // ====== INSTELLINGEN ======
+  const regels = [
+    "My name is Dorien",
+    "I made a website!!!!!!!",
+    "Wanne see??"
+  ];
+  const typSnelheid     = 90;    // ms per letter
+  const leesTijd        = 2500;  // ms pauze na elke regel
+  const startVertraging = 1800;  // ms na "Hello!" voor de eerste regel
+  // ===========================
 
-    Dit is je OVERZICHT: de pagina die al je edities toont en samenhoudt.
-    Alles hieronder is een voorbeeld. Vervang het door je eigen onderwerp.
+  const wacht = ms => new Promise(r => setTimeout(r, ms));
+  const container = document.getElementById("tekst");
 
-    Elke les komt hier één editie bij, en één nieuwe eis voor dit overzicht.
-  -->
+  async function typRegel(tekst) {
+    const regel = document.createElement("div");
+    regel.className = "regel";
+    container.appendChild(regel);
 
-  <header>
-    <!-- Je onderwerp. -->
-    <h1>De vogels in mijn tuin</h1>
+    for (const teken of tekst) {
+      const span = document.createElement("span");
+      span.className = "letter";
+      span.textContent = teken === " " ? "\u00A0" : teken;
+      regel.appendChild(span);
+      await wacht(typSnelheid);
+    }
+  }
 
-    <!-- Wat één editie is. Leg het vast in les 01. -->
-    <p>Elke editie is wat ik tussen twee lesdonderdagen zie vanuit mijn keukenraam: soort, aantal, uur, wat de vogel deed.</p>
-  </header>
+  async function start() {
+    await wacht(500);
+    document.getElementById("hello").classList.add("zichtbaar");
+    await wacht(startVertraging);
 
-  <main>
-    <!--
-      De lijst met edities. Elke editie is één regel met een link naar haar eigen pagina.
-      Een editie toevoegen: kopieer een <li> ... </li>, pas nummer, datum en link aan.
-      Nieuwste bovenaan of onderaan? Dat beslis jij. Zeg waarom.
-    -->
-    <ol class="edities">
-      <li>
-        <a href="edities/01.html">
-          <span class="nummer">01</span>
-          <time datetime="2026-10-01">1 oktober 2026</time>
-          <span class="focus">Het scherm</span>
-        </a>
-      </li>
-    </ol>
-  </main>
+    for (const regel of regels) {
+      await typRegel(regel);
+      await wacht(leesTijd);
+    }
+  }
 
+  start();
+</script>
 </body>
 </html>
