@@ -74,41 +74,6 @@
   #nee { pointer-events: none; }
   #nee.klaar { pointer-events: auto; }
   #scheid { cursor: default; }
-
-  /* ---------- confetti scherm ---------- */
-  #confetti {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  .confetti-letter {
-    position: absolute;
-    width: calc(2.353 * var(--u));
-    height: calc(4.37 * var(--u));
-    background: var(--blauw);
-    color: #fff;
-    font-family: var(--font-pixel);
-    font-size: calc(3.88 * var(--u));
-    line-height: calc(4.37 * var(--u));
-    text-align: center;
-    animation: vallen 3s linear forwards;
-  }
-
-  @keyframes vallen {
-    from {
-      opacity: 1;
-      transform: translateY(-100vh) rotate(0deg);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(100vh) rotate(360deg);
-    }
-  }
 </style>
 </head>
 <body>
@@ -138,7 +103,6 @@
   const pauzeKnoppen = 700;          // ms pauze voor de knoppen verschijnen
   const startVertraging = 600;       // ms voor de eerste letter
   const vluchtAfstand   = 60;        // px: zo dichtbij mag je muis komen voor NO wegspringt
-  const confettiWoorden = ["Jippie!!!", "YESSS!!!", "Yay!", "Woohoo!", "Fantastisch!", "🎉", "Geweldig!"];
   // ===========================
 
   const wacht = ms => new Promise(r => setTimeout(r, ms));
@@ -196,40 +160,6 @@
     }
   }
   start();
-
-  // ---------- confetti-effect als ja wordt geklikt ----------
-  function toonConfetti() {
-    const container = document.createElement("div");
-    container.id = "confetti";
-    document.body.appendChild(container);
-
-    // Veel letters genereren
-    for (let i = 0; i < 150; i++) {
-      const woord = confettiWoorden[Math.floor(Math.random() * confettiWoorden.length)];
-      const letter = document.createElement("div");
-      letter.className = "confetti-letter";
-      letter.textContent = woord;
-      
-      const x = Math.random() * 100;
-      const delay = Math.random() * 0.5;
-      const duration = 3 + Math.random() * 1;
-      
-      letter.style.left = x + "%";
-      letter.style.top = "-100px";
-      letter.style.animationDelay = delay + "s";
-      letter.style.animationDuration = duration + "s";
-      
-      container.appendChild(letter);
-    }
-
-    // Verwijder container na 4 seconden
-    setTimeout(() => container.remove(), 4000);
-  }
-
-  ja.addEventListener("click", (e) => {
-    e.preventDefault();
-    toonConfetti();
-  });
 
   // ---------- NO loopt weg ----------
   let gevlucht = false;
