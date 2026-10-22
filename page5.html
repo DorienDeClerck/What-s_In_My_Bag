@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's in my bag?</title>
+<style>
+
+  :root{
+    --f: min(1vw, 1.08vh);            /* basis-eenheid: schaalt mee met het scherm (zoals in je ontwerp) */
+    --blauw:#0000f5;
+    --lijn: max(1px, calc(.08 * var(--f)));
+    --u: calc(var(--f) * 1.292);       /* eenheid voor de pixel-letters */
+    --rij: calc(4.35 * var(--f));      /* hoogte van elke rij in het kader */
+    --sans: "Helvetica Neue","HelveticaNeue",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#fff;overflow:hidden}
+  a{color:inherit;text-decoration:none}
+
+  .kader{position:fixed;top:calc(2.6 * var(--f));bottom:calc(2.6 * var(--f));left:1.85vw;right:1.85vw;
+    border:var(--lijn) solid var(--blauw);display:flex;flex-direction:column;color:var(--blauw);
+    font-family:var(--sans);font-weight:300;font-size:calc(2.85 * var(--f));line-height:var(--rij);background:#fff}
+  .kop{display:flex;height:var(--rij);flex:none;border-bottom:var(--lijn) solid var(--blauw)}
+  .kop .home{width:calc(10.95 * var(--f));border-right:var(--lijn) solid var(--blauw);padding-left:calc(1.35 * var(--f))}
+  .kop .vul{flex:1}
+  .kop .nr{width:calc(5.15 * var(--f));border-left:var(--lijn) solid var(--blauw);padding-left:calc(1.15 * var(--f))}
+
+  .midden{position:relative;flex:1;min-height:0}
+  .scherm{position:absolute;inset:0;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
+  .scherm::-webkit-scrollbar{display:none}
+  .pijl{position:absolute;top:0;height:var(--rij);background:#fff;z-index:3;display:flex;align-items:center;justify-content:center}
+  .pijl svg{width:calc(4.4 * var(--f));height:calc(1.5 * var(--f));display:block;overflow:visible}
+  .pijl.l{left:0;width:calc(5.9 * var(--f));border-right:var(--lijn) solid var(--blauw);border-bottom:var(--lijn) solid var(--blauw)}
+  .pijl.r{right:0;width:calc(5.85 * var(--f));border-left:var(--lijn) solid var(--blauw);border-bottom:var(--lijn) solid var(--blauw)}
+  .pijl.uit{cursor:default}
+  .pijl:not(.uit){cursor:pointer}
+
+  .menu{flex:none;border-top:var(--lijn) solid var(--blauw)}
+  .menu .m{display:flex;align-items:center;height:var(--rij);padding-left:calc(1.3 * var(--f));border-bottom:var(--lijn) solid var(--blauw)}
+  .menu .m:last-child{border-bottom:0}
+  .menu a.m{cursor:pointer}
+  .menu .t{display:inline-block;line-height:1.05;padding-bottom:.05em;
+    background:linear-gradient(currentColor,currentColor) no-repeat 0 calc(100% - .02em) / 0 max(1px,.045em);
+    transition:background-size .55s ease}
+  .menu .t.onderlijnd{background-size:100% max(1px,.045em)}
+
+  .golf{margin:0;padding:calc(4.6 * var(--f)) calc(.9 * var(--f)) calc(2 * var(--f)) calc(1.5 * var(--f));font-size:calc(5.1 * var(--f));line-height:calc(6.85 * var(--f));font-weight:400;text-transform:uppercase;color:var(--blauw)}
+  .golf .it{background:linear-gradient(currentColor,currentColor) no-repeat 0 92%/0 .05em;transition:background-size .35s ease}
+  .golf .it.on{background-size:100% .05em}
+  .golf .ln{display:block;white-space:nowrap}
+  .golf .in{display:inline-block;vertical-align:top;will-change:transform}
+
+</style>
+</head>
+<body>
+<div class="kader">
+  <header class="kop"><a class="home" href="index.html">HOME</a><span class="vul"></span><span class="nr">05</span></header>
+  <div class="midden">
+    <a class="pijl l" href="page4.html" aria-label="Previous page"><svg viewBox="0 0 90 30" fill="none" stroke="#0000f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M88 15H3M17 2L3 15l14 13"/></svg></a>
+    <a class="pijl r uit" aria-label="Next page"><svg viewBox="0 0 90 30" fill="none" stroke="#0000f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15h85M73 2l14 13-14 13"/></svg></a>
+    <main class="scherm">
+<p class="golf"><span class="it"><span class="wd">USB STICK</span> /</span> <span class="it"><span class="wd">LAPTOP</span> /</span> <span class="it"><span class="wd">KEY</span> /</span> <span class="it"><span class="wd">NOTEBOOK</span> /</span> <span class="it"><span class="wd">WIRED EARBUDS</span> /</span> <span class="it"><span class="wd">PARFUM BOTTLE</span> /</span> <span class="it"><span class="wd">BOOKS</span> /</span> <span class="it"><span class="wd">PEN(S)</span> /</span> <span class="it"><span class="wd">PENCIL CASE</span> /</span> <span class="it"><span class="wd">JEWELERY</span> /</span> <span class="it"><span class="wd">PERFUME STICK</span> /</span> <span class="it"><span class="wd">LIGHTER</span> /</span> <span class="it"><span class="wd">HAND SANITIZER</span> /</span> <span class="it"><span class="wd">TISSUES</span> /</span> <span class="it"><span class="wd">LIPGLOSS</span> /</span> <span class="it"><span class="wd">LIP LINER</span> /</span> <span class="it"><span class="wd">WATER BOTTLE</span> /</span> <span class="it"><span class="wd">(UMBRELLA)</span> /</span> <span class="it"><span class="wd">CHARGING CABLE</span></span></p>
+    </main>
+  </div>
+  <nav class="menu">
+    <a class="m" href="index.html"><span class="t" id="nav1">01/ TEKST</span></a>
+    <a class="m" href="page2.html"><span class="t" id="nav2">02/ BEELD</span></a>
+    <a class="m" href="page3.html"><span class="t" id="nav3">03/ TWEE SCHERMEN</span></a>
+    <a class="m" href="page4.html"><span class="t" id="nav4">04/ DE HANDELING</span></a>
+    <a class="m" href="page5.html"><span class="t onderlijnd" id="nav5">05/ WEEEEEEE TEKST</span></a>
+  </nav>
+</div>
+<script>
+(function(){
+  var DATA=["USB STICK", "LAPTOP", "KEY", "NOTEBOOK", "WIRED EARBUDS", "PARFUM BOTTLE", "BOOKS", "PEN(S)", "PENCIL CASE", "JEWELERY", "PERFUME STICK", "LIGHTER", "HAND SANITIZER", "TISSUES", "LIPGLOSS", "LIP LINER", "WATER BOTTLE", "(UMBRELLA)", "CHARGING CABLE"];
+  var p=document.querySelector('.golf');
+  var calm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var lines=[],cur=[],tgt=[],hover=-1,run=false,last=0;
+  var FALL=[1,.55,.2];                                 /* hoe sterk de regels naast de aangewezen regel meedoen */
+
+  function tokens(){var t=[];DATA.forEach(function(w,i){w.split(' ').forEach(function(x){t.push([x,i])});if(i<DATA.length-1)t.push(['/',i]);});return t;}
+
+  function build(){
+    var tk=tokens();
+    p.innerHTML=tk.map(function(x){return '<span class="x">'+x[0]+'</span>'}).join(' ');
+    var xs=[].slice.call(p.querySelectorAll('.x')),rows=[],top=null;
+    xs.forEach(function(x,i){
+      var y=x.offsetTop;
+      if(top===null||Math.abs(y-top)>4){rows.push([]);top=y;}
+      rows[rows.length-1].push(tk[i]);
+    });
+    p.innerHTML=rows.map(function(r){
+      var h='',k=0;
+      while(k<r.length){var it=r[k][1],g=[];while(k<r.length&&r[k][1]===it){g.push(r[k][0]);k++;}
+        h+='<span class="it" data-i="'+it+'">'+g.join(' ')+'</span>'+(k<r.length?' ':'');}
+      return '<span class="ln"><span class="in">'+h+'</span></span>';}).join('');
+    var cs=getComputedStyle(p),W=p.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+    lines=[].slice.call(p.querySelectorAll('.ln')).map(function(ln,i){
+      var inn=ln.firstChild,nat=inn.getBoundingClientRect().width;
+      return {el:inn,box:ln,extra:Math.max(0,W-nat),sp:Math.max(1,inn.textContent.split(' ').length-1)};
+    });
+    cur=lines.map(function(_,i){return cur[i]||0});
+    tgt=lines.map(function(){return 0});
+    apply();
+  }
+  var mixC=0,mixT=0;
+  function apply(){lines.forEach(function(l,i){var e=ease(cur[i]);
+    l.el.style.wordSpacing=(l.extra/l.sp*e*(1-mixC)).toFixed(2)+'px';
+    l.el.style.transform='translateX('+(l.extra*e*mixC).toFixed(2)+'px)';});}
+  function ease(v){return v*v*(3-2*v)}                  /* zachte start en eind */
+
+  function loop(t){
+    var dt=Math.min(64,t-last||16);last=t;
+    var k=1-Math.exp(-dt/170),busy=false;
+    mixC+=(mixT-mixC)*k; if(Math.abs(mixT-mixC)<.002)mixC=mixT; else busy=true;
+    for(var i=0;i<lines.length;i++){
+      cur[i]+=(tgt[i]-cur[i])*k;
+      if(Math.abs(tgt[i]-cur[i])<.002)cur[i]=tgt[i];else busy=true;
+    }
+    apply();
+    if(busy)requestAnimationFrame(loop);else run=false;
+  }
+  function set(h){
+    hover=h;
+    for(var i=0;i<lines.length;i++){var d=h<0?9:Math.abs(i-h);tgt[i]=d<FALL.length?FALL[d]:0;}
+    if(calm){cur=tgt.slice();apply();return;}
+    if(!run){run=true;last=performance.now();requestAnimationFrame(loop);}
+  }
+  function lineAt(y){
+    for(var i=0;i<lines.length;i++){var r=lines[i].box.getBoundingClientRect();if(y>=r.top&&y<r.bottom)return i;}
+    return -1;
+  }
+  p.addEventListener('pointermove',function(e){
+    var r=p.getBoundingClientRect(),m=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));
+    mixT=m<.5?0:(m-.5)*2;                 /* linkerhelft: uitgerekt, rechterhelft: naar rechts geschoven */
+    mixT=mixT*mixT*(3-2*mixT);
+    var h=lineAt(e.clientY);if(h!==hover)set(h);else if(!run&&!calm&&h>=0){run=true;last=performance.now();requestAnimationFrame(loop);}});
+  p.addEventListener('pointerdown',function(e){var h=lineAt(e.clientY);if(h!==hover)set(h);});
+  var onI=-1;
+  function ul(i){if(i===onI)return;[].slice.call(p.querySelectorAll('.it.on')).forEach(function(e){e.classList.remove('on')});onI=i;if(i>=0)[].slice.call(p.querySelectorAll('.it[data-i="'+i+'"]')).forEach(function(e){e.classList.add('on')});}
+  p.addEventListener('pointerover',function(e){var t=e.target.closest&&e.target.closest('.it');ul(t?+t.dataset.i:-1);});
+  p.addEventListener('pointerleave',function(){set(-1);ul(-1);});
+  var rz;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){build();},120);});
+  build();
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(build);
+})();
+</script>
+</body>
+</html>
