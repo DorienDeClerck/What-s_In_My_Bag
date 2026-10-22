@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hello!</title>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+  :root{--font-pixel:"DotGothic16",monospace}
+
+  :root{
+    --f: min(1vw, 1.08vh);            /* basis-eenheid: schaalt mee met het scherm (zoals in je ontwerp) */
+    --blauw:#0000f5;
+    --lijn: max(1px, calc(.08 * var(--f)));
+    --u: calc(var(--f) * 1.292);       /* eenheid voor de pixel-letters */
+    --rij: calc(4.35 * var(--f));      /* hoogte van elke rij in het kader */
+    --sans: "Helvetica Neue","HelveticaNeue",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#fff;overflow:hidden}
+  a{color:inherit;text-decoration:none}
+
+  .kader{position:fixed;top:calc(2.6 * var(--f));bottom:calc(2.6 * var(--f));left:1.85vw;right:1.85vw;
+    border:var(--lijn) solid var(--blauw);display:flex;flex-direction:column;color:var(--blauw);
+    font-family:var(--sans);font-weight:300;font-size:calc(2.85 * var(--f));line-height:var(--rij);background:#fff}
+  .kop{display:flex;height:var(--rij);flex:none;border-bottom:var(--lijn) solid var(--blauw)}
+  .kop .home{width:calc(10.95 * var(--f));border-right:var(--lijn) solid var(--blauw);padding-left:calc(1.35 * var(--f))}
+  .kop .vul{flex:1}
+  .kop .nr{width:calc(5.15 * var(--f));border-left:var(--lijn) solid var(--blauw);padding-left:calc(1.15 * var(--f))}
+
+  .midden{position:relative;flex:1;min-height:0}
+  .scherm{position:absolute;inset:0;overflow-x:hidden;overflow-y:auto;scrollbar-width:none}
+  .scherm::-webkit-scrollbar{display:none}
+  .pijl{position:absolute;top:0;height:var(--rij);background:#fff;z-index:3;display:flex;align-items:center;justify-content:center}
+  .pijl svg{width:calc(4.4 * var(--f));height:calc(1.5 * var(--f));display:block;overflow:visible}
+  .pijl.l{left:0;width:calc(5.9 * var(--f));border-right:var(--lijn) solid var(--blauw);border-bottom:var(--lijn) solid var(--blauw)}
+  .pijl.r{right:0;width:calc(5.85 * var(--f));border-left:var(--lijn) solid var(--blauw);border-bottom:var(--lijn) solid var(--blauw)}
+  .pijl.uit{cursor:default}
+  .pijl:not(.uit){cursor:pointer}
+
+  .menu{flex:none;border-top:var(--lijn) solid var(--blauw)}
+  .menu .m{display:flex;align-items:center;height:var(--rij);padding-left:calc(1.3 * var(--f));border-bottom:var(--lijn) solid var(--blauw)}
+  .menu .m:last-child{border-bottom:0}
+  .menu a.m{cursor:pointer}
+  .menu .t{display:inline-block;line-height:1.05;padding-bottom:.05em;
+    background:linear-gradient(currentColor,currentColor) no-repeat 0 calc(100% - .02em) / 0 max(1px,.045em);
+    transition:background-size .55s ease}
+  .menu .t.onderlijnd{background-size:100% max(1px,.045em)}
+
+  .pagina{padding:calc(5.9 * var(--f)) 0 0 calc(2.95 * var(--f))}
+  /* ---------- letters / blokjes ---------- */
+  .regel{display:flex;flex-wrap:wrap;width:fit-content;max-width:calc(63.5 * var(--u));min-height:calc(4.37 * var(--u))}
+  .woord{display:flex}
+  .letter{position:relative;box-sizing:border-box;width:calc(2.353 * var(--u));height:calc(4.37 * var(--u));
+    background:var(--blauw);color:#fff;font-family:var(--font-pixel);font-size:calc(3.88 * var(--u));line-height:calc(4.37 * var(--u));
+    text-align:center;visibility:hidden;box-shadow:inset 1px 0 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.22);font-weight:400}
+  .letter.zichtbaar{visibility:visible}
+  .letter.cursor::before{content:"";position:absolute;left:calc(.15 * var(--u));top:14%;width:calc(.3 * var(--u));height:72%;background:var(--blauw);visibility:visible;animation:knipper .9s steps(1) infinite}
+  @keyframes knipper{50%{opacity:0}}
+  .rij{display:flex;align-items:flex-start;gap:calc(1.1 * var(--f));margin-top:calc(4.37 * var(--u))}
+  .knop{display:flex;height:calc(4.37 * var(--u));margin:0;padding:0;border:0;background:none;font:inherit;text-decoration:none;cursor:pointer}
+  /* ---------- JIPPIE-explosie ---------- */
+  :root{--s:1vw}
+  @media (max-width:700px){:root{--s:2vw}}
+  #chaos{position:fixed;inset:0;overflow:hidden;z-index:9999;pointer-events:none}
+  .strook{position:absolute;display:flex}
+  .strook span{width:calc(1.332 * var(--s));height:calc(2.44 * var(--s));background:var(--blauw);color:#fff;font-family:var(--font-pixel);font-size:calc(2.2 * var(--s));line-height:calc(2.44 * var(--s));text-align:center}
+  #nee{pointer-events:none}
+  #nee.klaar{pointer-events:auto}
+  #scheid{cursor:default}
+
+</style>
+</head>
+<body>
+<div class="kader">
+  <header class="kop"><a class="home" href="index.html">HOME</a><span class="vul"></span><span class="nr">01</span></header>
+  <div class="midden">
+    <a class="pijl l uit" aria-label="Previous"><svg viewBox="0 0 90 30" fill="none" stroke="#0000f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M88 15H3M17 2L3 15l14 13"/></svg></a>
+    <a class="pijl r" href="page2.html" aria-label="Next"><svg viewBox="0 0 90 30" fill="none" stroke="#0000f5" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15h85M73 2l14 13-14 13"/></svg></a>
+    <main class="scherm">
+      <div class="pagina">
+        <div id="tekst"></div>
+        <div class="rij">
+          <button class="knop" id="ja" type="button" aria-label="YES"></button>
+          <span class="knop" id="scheid"></span>
+          <button class="knop" id="nee" type="button" aria-label="NO"></button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <nav class="menu">
+    <a class="m" href="index.html"><span class="t" id="nav1">01/ TEKST</span></a>
+    <a class="m" href="page2.html"><span class="t" id="nav2">02/ BEELD</span></a>
+    <a class="m" href="page3.html"><span class="t" id="nav3">03/ TWEE SCHERMEN</span></a>
+    <a class="m" href="page4.html"><span class="t" id="nav4">04/ DE HANDELING</span></a>
+    <span class="m"></span>
+  </nav>
+</div>
+<script>
+  // ====== INSTELLINGEN ======
+  const regels = [
+    "Hello!",
+    "My name is Dorien",
+    "I made a website about what’s in my bag.",
+    "Wanna see?"
+  ];
+  const legeRegelVoor = [2];          // voor deze regels staat een lege regel (zoals in je ontwerp)
+  const jaTekst   = "YES :)!!!";     // zoals op je foto: pas aan naar wens
+  const jipWoorden = ["JIPPIEEEEE!", "JIPPPPPPPIIEEEEE!!!", "JIPPIEEE",
+                      "JIPPPPPIEEEEE!!!", "JIPPIEEEEEE!", "JOEPPPIEEE!!!"];  // de tekstjes
+  const jipStart  = 80;              // ms tussen de eerste stroken (wordt steeds sneller)
+  const jipMinimum = 10;             // ms: snelste tempo
+  const naarPagina2 = "page2.html";  // bestand dat na de JIPPIE-explosie opent
+  const naVolDelay  = 600;           // ms nadat de laatste woorden verschenen zijn (0 = meteen)
+  const jipVulling = 0.85;           // hoe vol het scherm komt (hoger = voller)
+  const typMin    = 25;              // ms: snelste tijd tussen twee letters
+  const typMax    = 70;              // ms: langzaamste tijd
+  const pauzeRegel   = 450;          // ms pauze na elke regel
+  const pauzeKnoppen = 700;          // ms pauze voor de knoppen verschijnen
+  const startVertraging = 600;       // ms voor de eerste letter
+  const vluchtAfstand   = 60;        // px: zo dichtbij mag je muis komen voor NO wegspringt
+  // ===========================
+
+  const wacht = ms => new Promise(r => setTimeout(r, ms));
+  const willekeurig = (a, b) => a + Math.random() * (b - a);
+
+  function vulMet(container, tekst) {
+    return [...tekst].map(teken => {
+      const s = document.createElement("span");
+      s.className = "letter";
+      s.textContent = teken === " " ? "\u00A0" : teken;
+      container.appendChild(s);
+      return s;
+    });
+  }
+
+  // zet een regel neer per woord, zodat afbreken op een smal scherm netjes tussen woorden gebeurt
+  function vulRegel(regel, tekst) {
+    const cellen = [];
+    for (const deel of tekst.match(/\S+\s*|\s+/g)) {
+      const w = document.createElement("div");
+      w.className = "woord";
+      cellen.push(...vulMet(w, deel));
+      regel.appendChild(w);
+    }
+    return cellen;
+  }
+
+  // ---------- alles opbouwen (nog onzichtbaar) ----------
+  const groepen = [];   // { cellen, pauzeNa, tekst }
+  const tekstEl = document.getElementById("tekst");
+  regels.forEach((t, i) => {
+    const regel = document.createElement("div");
+    regel.className = "regel";
+    if (legeRegelVoor.includes(i)) regel.style.marginTop = "calc(4.37 * var(--u))";
+    tekstEl.appendChild(regel);
+    groepen.push({
+      cellen: vulRegel(regel, t), tekst: t,
+      pauzeNa: i === regels.length - 1 ? pauzeKnoppen : pauzeRegel
+    });
+  });
+
+  const ja = document.getElementById("ja");
+  const scheid = document.getElementById("scheid");
+  const nee = document.getElementById("nee");
+  groepen.push({ cellen: vulMet(ja, jaTekst),   tekst: jaTekst,   pauzeNa: 250 });
+  groepen.push({ cellen: vulMet(scheid, "/"),   tekst: "/",       pauzeNa: 250 });
+  groepen.push({ cellen: vulMet(nee, "NO :("),  tekst: "NO :(",   pauzeNa: 0, laatste: true });
+
+  // ---------- typen ----------
+  async function start() {
+    const rij = groepen.flatMap(g => g.cellen.map((cel, i) => ({
+      cel, teken: g.tekst[i],
+      eindeGroep: i === g.cellen.length - 1, g
+    })));
+
+    rij[0].cel.classList.add("cursor");
+    await wacht(startVertraging);
+
+    for (let i = 0; i < rij.length; i++) {
+      const { cel, teken, eindeGroep, g } = rij[i];
+      cel.classList.remove("cursor");
+      cel.classList.add("zichtbaar");
+      if (rij[i + 1]) rij[i + 1].cel.classList.add("cursor");
+      if (eindeGroep && g.laatste) nee.classList.add("klaar");
+      await wacht(willekeurig(typMin, typMax) + (teken === " " ? 30 : 0));
+      if (eindeGroep) await wacht(g.pauzeNa);
+    }
+    document.getElementById("nav1").classList.add("onderlijnd");   // typen klaar -> lijntje onder 01/ TEKST
+  }
+  start();
+
+  // ---------- YES: het scherm loopt vol met JIPPIE ----------
+  let explodeert = false;
+  ja.addEventListener("click", () => {
+    if (explodeert) return;
+    explodeert = true;
+    document.body.style.overflow = "hidden";
+
+    const chaos = document.createElement("div");
+    chaos.id = "chaos";
+    document.body.appendChild(chaos);
+
+    const W = innerWidth, H = innerHeight;
+    const s = (W <= 700 ? 2 : 1) * W / 100;
+    const gemLengte = 13;
+    const aantal = Math.min(260, Math.max(60,
+      Math.round(jipVulling * W * H / (gemLengte * 1.332 * s * 2.44 * s))));
+
+    let i = 0;
+    function volgende() {
+      const strook = document.createElement("div");
+      strook.className = "strook";
+      const woord = jipWoorden[Math.floor(Math.random() * jipWoorden.length)];
+      for (const teken of woord) {
+        const l = document.createElement("span");
+        l.textContent = teken;
+        strook.appendChild(l);
+      }
+      const x = -0.1 * W + Math.random() * 1.2 * W;
+      const y = -0.1 * H + Math.random() * 1.2 * H;
+      const hoek = Math.random() * 360;
+      const schaal = 0.85 + Math.random() * 0.5;
+      strook.style.left = x + "px";
+      strook.style.top = y + "px";
+      strook.style.transform = `translate(-50%, -50%) rotate(${hoek}deg) scale(${schaal})`;
+      chaos.appendChild(strook);
+
+      if (++i < aantal) setTimeout(volgende, Math.max(jipMinimum, jipStart * Math.pow(0.93, i)));
+      else setTimeout(() => { window.location.href = naarPagina2; }, naVolDelay);   // scherm vol -> direct naar pagina 2
+    }
+    volgende();
+  });
+
+  // ---------- NO loopt weg ----------
+  let gevlucht = false;
+
+  function vlucht(px, py) {
+    const r = nee.getBoundingClientRect();
+    if (!gevlucht) {                       // eerste keer: losmaken zonder te verspringen
+      nee.style.position = "fixed";
+      nee.style.left = r.left + "px";
+      nee.style.top = r.top + "px";
+      nee.style.margin = "0";
+      void nee.offsetWidth;
+      nee.style.transition = "left .25s ease-out, top .25s ease-out";
+      gevlucht = true;
+    }
+    const m = 12;
+    const maxX = Math.max(m, innerWidth - r.width - m);
+    const maxY = Math.max(m, innerHeight - r.height - m);
+    const minAfstand = Math.min(innerWidth, innerHeight) * 0.35;
+
+    let beste = null, besteAfstand = -1;
+    for (let k = 0; k < 40; k++) {
+      const x = m + Math.random() * (maxX - m);
+      const y = m + Math.random() * (maxY - m);
+      const d = Math.hypot(x + r.width / 2 - px, y + r.height / 2 - py);
+      if (d > besteAfstand) { besteAfstand = d; beste = { x, y }; }
+      if (d >= minAfstand) break;
+    }
+    nee.style.left = beste.x + "px";
+    nee.style.top = beste.y + "px";
+  }
+
+  // muis in de buurt, of eroverheen / aanraken
+  document.addEventListener("pointermove", e => {
+    if (e.pointerType !== "mouse" || !nee.classList.contains("klaar")) return;
+    const r = nee.getBoundingClientRect();
+    if (e.clientX > r.left - vluchtAfstand && e.clientX < r.right + vluchtAfstand &&
+        e.clientY > r.top - vluchtAfstand && e.clientY < r.bottom + vluchtAfstand) {
+      vlucht(e.clientX, e.clientY);
+    }
+  });
+  nee.addEventListener("pointerenter", e => vlucht(e.clientX, e.clientY));
+  nee.addEventListener("pointerdown", e => { e.preventDefault(); vlucht(e.clientX, e.clientY); });
+  nee.addEventListener("focus", () => {
+    const r = nee.getBoundingClientRect();
+    vlucht(r.left + r.width / 2, r.top + r.height / 2);
+  });
+
+  // binnen beeld houden als het venster verandert
+  addEventListener("resize", () => {
+    if (!gevlucht) return;
+    const r = nee.getBoundingClientRect();
+    nee.style.left = Math.min(Math.max(12, r.left), Math.max(12, innerWidth - r.width - 12)) + "px";
+    nee.style.top  = Math.min(Math.max(12, r.top),  Math.max(12, innerHeight - r.height - 12)) + "px";
+  });
+</script>
+</body>
+</html>
